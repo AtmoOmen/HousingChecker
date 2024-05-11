@@ -5,6 +5,7 @@ using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using HousingChecker.Managers;
 
 namespace HousingChecker;
 
@@ -22,10 +23,14 @@ public class Service
 
         WindowManager.Init();
         CommandHandler();
+        OnlineStats.Init();
+        HousingStats.Init();
     }
 
     public static void Uninit()
     {
+        HousingStats.Uninit();
+        OnlineStats.Uninit();
         WindowManager.Uninit();
         Config.Uninit();
     }
@@ -81,4 +86,6 @@ public class Service
     public static SigScanner SigScanner { get; private set; } = new();
     public static Configuration Config { get; private set; } = null!;
     public static WindowManager WindowManager { get; private set; } = new();
+    public static HousingStatsManager HousingStats { get; private set; } = new();
+    public static OnlineStatsManager OnlineStats { get; private set; } = new();
 }
