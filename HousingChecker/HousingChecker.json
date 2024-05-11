@@ -2,13 +2,14 @@
   "Author": "AtmoOmen",
   "Name": "HousingChecker",
   "Punchline": "艾欧泽亚售楼中心 Dalamud 分部",
-  "Description": "适用于国服的 艾欧泽亚售楼中心 数据上传器/查看器",
+  "Description": "适用于 国服 的 艾欧泽亚售楼中心 数据上传器/查看器",
   "ApplicableVersion": "any",
   "Tags": [
     "house",
     "housing",
     "艾欧泽亚售楼中心",
     "房子",
-    "售楼"
+    "售楼",
+    "房"
   ]
 }

@@ -13,8 +13,10 @@ public class OnlineStatsManager
 
     internal void Init()
     {
-        Client.DefaultRequestHeaders.UserAgent.ParseAdd($"HousingChecker {Plugin.Version} / AtmoOmen");
-        Client.DefaultRequestHeaders.Authorization = new($"QqrqPYS6ePW9TbT2RVQsUSmzMgV1egJj");
+        Client.DefaultRequestHeaders.UserAgent.ParseAdd($"Dalamud.HousingChecker {Plugin.Version} / AtmoOmen");
+
+        if (!string.IsNullOrWhiteSpace(Service.Config.Token))
+            Client.DefaultRequestHeaders.Authorization = new("Token", Service.Config.Token.Trim());
     }
 
     public async void UploadWard(object entry)

@@ -8,6 +8,8 @@ public class Configuration : IPluginConfiguration
 {
     public int Version { get; set; } = 0;
 
+    public string Token { get; set; } = string.Empty;
+
 
     public void Init()
     {
