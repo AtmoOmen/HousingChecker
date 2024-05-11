@@ -1,7 +1,7 @@
 using System;
 using Dalamud.Configuration;
 
-namespace SamplePlugin;
+namespace HousingChecker;
 
 [Serializable]
 public class Configuration : IPluginConfiguration

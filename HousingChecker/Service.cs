@@ -6,11 +6,11 @@ using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 
-namespace SamplePlugin;
+namespace HousingChecker;
 
 public class Service
 {
-    public const string CommandName = "/omspp";
+    public const string CommandName = "/housingchecker";
 
     public static void Init(DalamudPluginInterface pluginInterface)
     {
@@ -32,7 +32,7 @@ public class Service
 
     private static void CommandHandler()
     {
-        const string helpMessage = "A useful message to display in /xlhelp";
+        const string helpMessage = "打开设置界面";
 
         Command.RemoveHandler(CommandName);
         Command.AddHandler(CommandName, new CommandInfo(OnCommand) { HelpMessage = helpMessage });
@@ -40,7 +40,7 @@ public class Service
 
     private static void OnCommand(string command, string args)
     {
-        WindowManager.ConfigWindow.IsOpen = !WindowManager.ConfigWindow.IsOpen;
+        WindowManager.ConfigWindow.IsOpen ^= true;
     }
 
     [PluginService] public static IAddonLifecycle AddonLifecycle { get; private set; } = null!;

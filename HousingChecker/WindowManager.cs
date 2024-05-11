@@ -1,7 +1,7 @@
 using System.Linq;
 using Dalamud.Interface.Windowing;
-using SamplePlugin;
-using SamplePlugin.Windows;
+using HousingChecker;
+using HousingChecker.Windows;
 
 namespace DailyRoutines.Managers;
 

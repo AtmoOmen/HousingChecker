@@ -1,13 +1,13 @@
 using System;
-using DailyRoutines.Managers;
 using System.Reflection;
 using Dalamud.Plugin;
+using HousingChecker;
 
-namespace SamplePlugin;
+namespace HousingChecker;
 
 public sealed class Plugin : IDalamudPlugin
 {
-    public string Name => "Omen Sample Plugin";
+    public string Name => "HousingChecker";
     public static Version? Version { get; private set; }
 
     public Plugin(DalamudPluginInterface pluginInterface)
