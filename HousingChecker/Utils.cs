@@ -37,4 +37,31 @@ public class Utils
             _ => territoryTypeId - 339 // 海雾村, 薰衣草苗圃, 高脚孤丘
         };
     }
+
+    public static int ToHouseAreaNumber(HouseArea area)
+    {
+        return area switch
+        {
+            HouseArea.Unknown => -1,
+            HouseArea.Mist => 0,
+            HouseArea.LavenderBeds => 1,
+            HouseArea.Goblet => 2,
+            HouseArea.Shirogane => 3,
+            HouseArea.Empyreum => 4,
+            _ => -1
+        };
+    }
+
+    public static string HouseAreaNumberToString(int area)
+    {
+        return area switch
+        {
+            0 => "海雾村",
+            1 => "薰衣草苗圃",
+            2 => "高脚孤丘",
+            3 => "白银乡",
+            4 => "穹顶皓天",
+            _ => "未知"
+        };
+    }
 }

@@ -16,10 +16,9 @@ public enum RegionType
 
 public enum LotteryState
 {
-    Unknown,
-    Purchaseable,
-    ResultPeriod,
-    Preparing
+    Available = 1,
+    ResultsPeriod = 2,
+    Unavailable = 3
 }
 
 public enum PurchaseType
