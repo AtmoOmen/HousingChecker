@@ -1,15 +1,17 @@
 {
-  "Author": "AtmoOmen",
-  "Name": "HousingChecker",
-  "Punchline": "艾欧泽亚售楼中心 Dalamud 分部",
-  "Description": "适用于 国服 的 艾欧泽亚售楼中心 数据上传器\n\n房区数据: 选择 住宅区 时自动上传\n抽选数据: 查看 空地门牌 时自动上传",
-  "ApplicableVersion": "any",
-  "Tags": [
-    "house",
-    "housing",
-    "艾欧泽亚售楼中心",
-    "房子",
-    "售楼",
-    "房"
-  ]
+    "Author": "AtmoOmen",
+    "Name": "HousingChecker",
+    "Punchline": "艾欧泽亚售楼中心 Dalamud 分部",
+    "Description": "适用于 国服 的 艾欧泽亚售楼中心 数据上传器\n\n房区数据: 选择 住宅区 时自动上传\n抽选数据: 查看 空地门牌 时自动上传",
+    "ApplicableVersion": "any",
+    "IconUrl": "https://gh.atmoomen.top/HousingChecker/main/icon.png",
+    "RepoUrl": "https://github.com/AtmoOmen/HousingChecker",
+    "Tags": [
+        "house",
+        "housing",
+        "艾欧泽亚售楼中心",
+        "房子",
+        "售楼",
+        "房"
+    ]
 }
