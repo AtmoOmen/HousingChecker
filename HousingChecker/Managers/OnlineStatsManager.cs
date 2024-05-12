@@ -86,6 +86,29 @@ public class OnlineStatsManager
         }
     }
 
+    public async Task<List<HousingSellInfo>?> DownloadDataAsync(uint serverID)
+    {
+        try
+        {
+            var content = await Client.GetStringAsync($"https://househelper.ffxiv.cyou/api/sales?server={serverID}");
+            return JsonConvert.DeserializeObject<List<HousingSellInfo>?>(content);
+        }
+        catch (Exception e)
+        {
+            Service.Log.Error(e, "尝试拉取在线信息失败");
+            Service.DalamudNotice.AddNotification(new()
+            {
+                Title = "HousingChecker",
+                Content = $"拉取在线信息失败: {e.Message}",
+                InitialDuration = TimeSpan.FromSeconds(5),
+                ExtensionDurationSinceLastInterest = TimeSpan.FromSeconds(1),
+                Type = NotificationType.Error
+            });
+
+            return null;
+        }
+    }
+
 
     internal void Uninit()
     {

@@ -13,13 +13,21 @@ public class ConfigWindow() : Window("设置###HousingChecker",
 {
     public override void Draw()
     {
-        if (ImGui.Selectable("打开 艾欧泽亚售楼中心"))
+        ImGui.SetWindowFontScale(2f);
+        ImGui.Text("Housing Checker");
+        ImGui.SetWindowFontScale(1f);
+
+        if (ImGui.Button("艾欧泽亚售楼中心"))
             Util.OpenLink("https://househelper.ffxiv.cyou/");
+
+        ImGui.SameLine();
+        if (ImGui.Button("Github"))
+            Util.OpenLink("https://github.com/AtmoOmen/HousingChecker");
 
         ImGui.Separator();
 
         var tokenInput = Service.Config.Token;
-        ImGui.SetNextItemWidth(200f * ImGuiHelpers.GlobalScale);
+        ImGui.SetNextItemWidth(300f * ImGuiHelpers.GlobalScale);
         ImGui.InputText("上传 Token", ref tokenInput, 100);
 
         if (ImGui.IsItemDeactivatedAfterEdit())

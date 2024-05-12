@@ -64,4 +64,17 @@ public class Utils
             _ => "未知"
         };
     }
+
+    public static int HouseAreaToTerritory(int area)
+    {
+        return area switch
+        {
+            0 => 339,
+            1 => 340,
+            2 => 341,
+            3 => 641,
+            4 => 979,
+            _ => 0
+        };
+    }
 }

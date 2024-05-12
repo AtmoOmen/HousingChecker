@@ -1,9 +1,8 @@
 using System.Linq;
 using Dalamud.Interface.Windowing;
-using HousingChecker;
 using HousingChecker.Windows;
 
-namespace DailyRoutines.Managers;
+namespace HousingChecker.Managers;
 
 public class WindowManager
 {
@@ -12,7 +11,7 @@ public class WindowManager
 
     internal void Init()
     {
-        WindowSystem = new("OmenSamplePlugin");
+        WindowSystem = new("HousingChecker");
         ConfigWindow = new();
         AddWindows(ConfigWindow);
 
@@ -49,13 +48,16 @@ public class WindowManager
         WindowSystem?.Draw();
     }
 
-    public void DrawConfigUI()
+    private static void DrawConfigUI()
     {
         if (ConfigWindow != null) ConfigWindow.IsOpen ^= true;
     }
 
     internal void Uninit()
     {
+        Service.PluginInterface.UiBuilder.Draw -= DrawUI;
+        Service.PluginInterface.UiBuilder.OpenConfigUi -= DrawConfigUI;
+
         WindowSystem.RemoveAllWindows();
         ConfigWindow?.Dispose();
         ConfigWindow = null;

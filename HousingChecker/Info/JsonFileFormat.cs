@@ -219,7 +219,7 @@ public class LotterySnapshot : IEquatable<LotterySnapshot>
     /// </summary>
     public uint Participate { get; }
     /// <summary>
-    /// 胜选人 Content ID
+    /// 胜选编号
     /// </summary>
     public uint Winner { get; }
 
@@ -264,6 +264,104 @@ public class LotterySnapshot : IEquatable<LotterySnapshot>
     }
 
     public static bool operator !=(LotterySnapshot lhs, LotterySnapshot rhs)
+    {
+        return !(lhs == rhs);
+    }
+}
+
+public class HousingSellInfo : IEquatable<HousingSellInfo>
+{
+    /// <summary>
+    /// 服务器 ID
+    /// </summary>
+    public int Server { get; set; }
+    /// <summary>
+    /// 区域 ID
+    /// </summary>
+    public int Area { get; set; }
+    /// <summary>
+    /// 房区 ID, 由 0 开始
+    /// </summary>
+    public int Slot { get; set; }
+    /// <summary>
+    /// 房屋 ID, 由 1 开始
+    /// </summary>
+    public int ID { get; set; }
+    /// <summary>
+    /// 价格
+    /// </summary>
+    public int Pirce { get; set; }
+    /// <summary>
+    /// 房屋尺寸
+    /// </summary>
+    public int Size { get; set; }
+    /// <summary>
+    /// 首次发现时间, Unix 时间戳
+    /// </summary>
+    public int FirstSeen { get; set; }
+    /// <summary>
+    /// 上次发现时间, Unix 时间戳
+    /// </summary>
+    public int LastSeen { get; set; }
+    /// <summary>
+    /// 抽签状态
+    /// </summary>
+    public int State { get; set; }
+    /// <summary>
+    /// 参与人数
+    /// </summary>
+    public int Participate { get; set; }
+    /// <summary>
+    /// 胜选编号
+    /// </summary>
+    public int Winner { get; set; }
+    /// <summary>
+    /// 当前阶段结束时间, Unix 时间戳
+    /// </summary>
+    public int EndTime { get; set; }
+    /// <summary>
+    /// 上次抽签信息更新时间
+    /// </summary>
+    public int UpdateTime { get; set; }
+    /// <summary>
+    /// 购买方式
+    /// </summary>
+    public int PurchaseType { get; set; }
+    /// <summary>
+    /// 房屋用途限制
+    /// </summary>
+    public int RegionType { get; set; }
+
+    public HousingSellInfo() { }
+
+    public bool Equals(HousingSellInfo? other)
+    {
+        if (other is null) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return Server == other.Server && Area == other.Area && Slot == other.Slot && ID == other.ID;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != GetType()) return false;
+
+        return Equals((HousingSellInfo)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Server, Area, Slot, ID);
+    }
+
+    public static bool operator ==(HousingSellInfo? lhs, HousingSellInfo? rhs)
+    {
+        if (lhs is null) return rhs is null;
+        return lhs.Equals(rhs);
+    }
+
+    public static bool operator !=(HousingSellInfo lhs, HousingSellInfo rhs)
     {
         return !(lhs == rhs);
     }
