@@ -1,15 +1,3 @@
-# Omen Sample Plugin
+# HousingChecker
 
-Modified from goatcorp's one, by AtmoOmen. Mainly for my personal use.
-
-修改自羊圈的示例插件模板，主要为我个人使用。
-
-## Information / 信息
-
-- **API**： 9
-
-- **Dalamud Packager**: 2.1.12
-
-- Provides a more logical code arrangement and simpler service and configuration management.
-
-  提供了更加逻辑明确的代码，和更加简洁的服务与配置管理。
+适用于 最终幻想XIV 国服 艾欧泽亚售楼平台 的轻量化 Dalamud 房屋数据上传插件
