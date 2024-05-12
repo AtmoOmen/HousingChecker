@@ -1,6 +1,6 @@
 using HousingChecker.Info;
 
-namespace HousingChecker;
+namespace HousingChecker.Helpers;
 
 public class Utils
 {

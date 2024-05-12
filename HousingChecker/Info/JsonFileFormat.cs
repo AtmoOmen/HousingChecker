@@ -2,6 +2,7 @@ using System;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using Lumina.Excel.GeneratedSheets;
 using System.Linq;
+using HousingChecker.Helpers;
 
 namespace HousingChecker.Info;
 

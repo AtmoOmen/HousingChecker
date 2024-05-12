@@ -1,7 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Dalamud.Interface.Colors;
+using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
+using HousingChecker.Helpers;
 using ImGuiNET;
 
 namespace HousingChecker.Windows;
@@ -11,6 +17,8 @@ public class ConfigWindow() : Window("设置###HousingChecker",
                                      ImGuiWindowFlags.NoScrollbar |
                                      ImGuiWindowFlags.NoScrollWithMouse), IDisposable
 {
+    private static readonly HashSet<uint> ValidZones = [339, 339, 340, 641, 979];
+
     public override void Draw()
     {
         ImGui.SetWindowFontScale(2f);
@@ -24,7 +32,11 @@ public class ConfigWindow() : Window("设置###HousingChecker",
         if (ImGui.Button("Github"))
             Util.OpenLink("https://github.com/AtmoOmen/HousingChecker");
 
+        ImGui.Spacing();
+
         ImGui.Separator();
+
+        ImGui.Spacing();
 
         var tokenInput = Service.Config.Token;
         ImGui.SetNextItemWidth(300f * ImGuiHelpers.GlobalScale);
@@ -40,6 +52,55 @@ public class ConfigWindow() : Window("设置###HousingChecker",
 
         if (ImGui.IsItemHovered())
             ImGui.SetTooltip("在此输入从网站 用户管理 处获得的 Token\n留空则以匿名的方式上传数据");
+
+        ImGui.Spacing();
+
+        ImGui.Separator();
+
+        ImGui.Spacing();
+
+        ImGui.TextColored(ImGuiColors.DalamudOrange, "快捷上传:");
+
+        var isValidZone = ValidZones.Contains(Service.ClientState.TerritoryType);
+        ImGui.BeginDisabled(!isValidZone);
+        if (ImGui.Button("一键上传当前房区数据"))
+        {
+            // unsafe
+            // {
+            //     if (Service.Gui.GetAddonByName("HousingSelectBook") == nint.Zero)
+            //         AgentModule.Instance()->GetAgentByInternalId(AgentId.HousingPortal)->Show();
+            // }
+
+            unsafe
+            {
+                AgentHelper.SendEvent(AgentId.HousingPortal, 0, 3);
+            }
+
+            Service.Framework.RunOnTick(() =>
+            {
+                Task.Run(async () =>
+                {
+                    for (var i = 0; i < 30; i++)
+                    {
+                        unsafe
+                        {
+                            AgentHelper.SendEvent(AgentId.HousingPortal, 1, 1, i);
+                        }
+
+                        await Task.Delay(100);
+                    }
+                });
+            }, TimeSpan.FromMilliseconds(500));
+        }
+        ImGui.EndDisabled();
+
+        if (!isValidZone)
+        {
+            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
+            ImGui.PushStyleColor(ImGuiCol.TextDisabled, ImGuiColors.DalamudYellow);
+            ImGuiComponents.HelpMarker("当前不位于有效任何房区内, 请先进入你想要上传数据的房区");
+            ImGui.PopStyleColor(2);
+        }
     }
 
     public void Dispose() { }

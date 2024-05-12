@@ -6,6 +6,7 @@ using System.Text;
 using HousingChecker.Info;
 using System.Threading.Tasks;
 using Dalamud.Interface.Internal.Notifications;
+using HousingChecker.Helpers;
 using Lumina.Excel.GeneratedSheets2;
 
 namespace HousingChecker.Managers;

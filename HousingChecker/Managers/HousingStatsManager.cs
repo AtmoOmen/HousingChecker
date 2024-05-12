@@ -12,7 +12,7 @@ public class HousingStatsManager
     [Signature("40 55 57 41 54 41 56 41 57 48 8D AC 24 ?? ?? ?? ?? B8", DetourName = nameof(OnHousingWardInfo))]
     private Hook<HousingWardInfoDelegate>? HousingWardInfoHook;
 
-    private delegate void PlacardSaleInfoDelegate(nint agentBase, HousingType housingType, ushort territoryTypeId, byte wardId,
+    private delegate void PlacardSaleInfoDelegate(nint housingSignboardAgent, HousingType housingType, ushort territoryTypeId, byte wardId,
                                                   byte plotId, short apartmentNumber, nint placardSaleInfo, long a8);
     [Signature("E8 ?? ?? ?? ?? 48 8B B4 24 ?? ?? ?? ?? 48 8B 6C 24 ?? E9", DetourName = nameof(PlacardSaleInfoDetour))]
     private Hook<PlacardSaleInfoDelegate>? PlacardSaleInfoHook;
@@ -56,10 +56,10 @@ public class HousingStatsManager
 
     // 门牌
     public void PlacardSaleInfoDetour(
-        nint agentBase, HousingType housingType, ushort territoryTypeId, byte wardId, byte plotId,
+        nint housingSignboardAgent, HousingType housingType, ushort territoryTypeId, byte wardId, byte plotId,
         short apartmentNumber, nint placardSaleInfo, long a8)
     {
-        PlacardSaleInfoHook.Original(agentBase, housingType, territoryTypeId, wardId, plotId, apartmentNumber,
+        PlacardSaleInfoHook.Original(housingSignboardAgent, housingType, territoryTypeId, wardId, plotId, apartmentNumber,
                                      placardSaleInfo, a8);
 
         // 非空地, 直接返回
