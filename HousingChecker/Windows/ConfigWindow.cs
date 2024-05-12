@@ -61,44 +61,30 @@ public class ConfigWindow() : Window("设置###HousingChecker",
 
         ImGui.TextColored(ImGuiColors.DalamudOrange, "快捷上传:");
 
-        var isValidZone = ValidZones.Contains(Service.ClientState.TerritoryType);
-        ImGui.BeginDisabled(!isValidZone);
+        var addon = Service.Gui.GetAddonByName("HousingSelectBlock");
+        ImGui.BeginDisabled(addon == nint.Zero);
         if (ImGui.Button("一键上传当前房区数据"))
         {
-            // unsafe
-            // {
-            //     if (Service.Gui.GetAddonByName("HousingSelectBook") == nint.Zero)
-            //         AgentModule.Instance()->GetAgentByInternalId(AgentId.HousingPortal)->Show();
-            // }
-
-            unsafe
+            Task.Run(async () =>
             {
-                AgentHelper.SendEvent(AgentId.HousingPortal, 0, 3);
-            }
-
-            Service.Framework.RunOnTick(() =>
-            {
-                Task.Run(async () =>
+                for (var i = 0; i < 30; i++)
                 {
-                    for (var i = 0; i < 30; i++)
+                    unsafe
                     {
-                        unsafe
-                        {
-                            AgentHelper.SendEvent(AgentId.HousingPortal, 1, 1, i);
-                        }
-
-                        await Task.Delay(100);
+                        AgentHelper.SendEvent(AgentId.HousingPortal, 1, 1, i);
                     }
-                });
-            }, TimeSpan.FromMilliseconds(500));
+
+                    await Task.Delay(100);
+                }
+            });
         }
         ImGui.EndDisabled();
 
-        if (!isValidZone)
+        if (addon == nint.Zero)
         {
             ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
             ImGui.PushStyleColor(ImGuiCol.TextDisabled, ImGuiColors.DalamudYellow);
-            ImGuiComponents.HelpMarker("当前不位于有效任何房区内, 请先进入你想要上传数据的房区");
+            ImGuiComponents.HelpMarker("未找到房区传送列表, 请先打开你想要上传数据的房区的传送列表");
             ImGui.PopStyleColor(2);
         }
     }
