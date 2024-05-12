@@ -15,7 +15,7 @@ public class OnlineStatsManager
 {
     private static readonly HttpClient Client = new();
 
-    private const string BaseUrl = "https://househelper.ffxiv.cyou/api/";
+    private const string BaseUrl = "https://house.ffxiv.cyou/api/";
 
     internal void Init()
     {
@@ -91,7 +91,7 @@ public class OnlineStatsManager
     {
         try
         {
-            var content = await Client.GetStringAsync($"https://househelper.ffxiv.cyou/api/sales?server={serverID}");
+            var content = await Client.GetStringAsync($"https://house.ffxiv.cyou/api/sales?server={serverID}");
             return JsonConvert.DeserializeObject<List<HousingSellInfo>?>(content);
         }
         catch (Exception e)

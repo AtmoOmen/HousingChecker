@@ -26,7 +26,7 @@ public class ConfigWindow() : Window("设置###HousingChecker",
         ImGui.SetWindowFontScale(1f);
 
         if (ImGui.Button("艾欧泽亚售楼中心"))
-            Util.OpenLink("https://househelper.ffxiv.cyou/");
+            Util.OpenLink("https://house.ffxiv.cyou/");
 
         ImGui.SameLine();
         if (ImGui.Button("Github"))

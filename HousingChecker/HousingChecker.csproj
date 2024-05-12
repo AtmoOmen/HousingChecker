@@ -4,7 +4,7 @@
     <PropertyGroup>
         <Authors>AtmoOmen</Authors>
         <Version>0.0.0.1</Version>
-        <Description>Sample Plugin Template based on goatcorp's.</Description>
+        <Description>Housing Info Uploader for 艾欧泽亚售楼平台</Description>
         <Copyright></Copyright>
         <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
         <IsPackable>false</IsPackable>
