@@ -2,30 +2,30 @@ namespace HousingChecker.Info;
 
 public enum HousingType : byte
 {
-    OwnedHouse = 0,
-    UnownedHouse = 1,
-    FreeCompanyApartment = 2,
-    Apartment = 3
+    有主房屋 = 0,
+    无主房屋 = 1,
+    部队房间 = 2,
+    公寓 = 3
 }
 
 public enum RegionType
 {
-    FreeCompany, // 仅限部队购买
-    Personal     // 仅限个人购买
+    仅限部队, // 仅限部队购买
+    仅限个人  // 仅限个人购买
 }
 
 public enum LotteryState
 {
-    Available = 1,
-    ResultsPeriod = 2,
-    Unavailable = 3
+    可抽选 = 1,
+    结果公示 = 2,
+    不可抽选 = 3
 }
 
 public enum PurchaseType
 {
-    Unavailable,
-    FirstComeFirstServer,
-    Lottery
+    不可购买,
+    先到先得,
+    抽选
 }
 
 public enum HouseSize
@@ -37,10 +37,10 @@ public enum HouseSize
 
 public enum HouseArea
 {
-    Unknown,
-    Mist = 339,
-    LavenderBeds = 340,
-    Goblet = 341,
-    Shirogane = 641,
-    Empyreum = 979
+    未知,
+    海雾村 = 339,
+    薰衣草苗圃 = 340,
+    高脚孤丘 = 341,
+    白银乡 = 641,
+    穹顶皓天 = 979
 }

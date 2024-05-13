@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Dalamud.Interface.Colors;
-using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
-using FFXIVClientStructs.FFXIV.Client.UI.Agent;
-using HousingChecker.Helpers;
+using HousingChecker.Info;
 using ImGuiNET;
 
 namespace HousingChecker.Windows;
@@ -17,8 +13,6 @@ public class ConfigWindow() : Window("设置###HousingChecker",
                                      ImGuiWindowFlags.NoScrollbar |
                                      ImGuiWindowFlags.NoScrollWithMouse), IDisposable
 {
-    private static readonly HashSet<uint> ValidZones = [339, 339, 340, 641, 979];
-
     public override void Draw()
     {
         ImGui.SetWindowFontScale(2f);
@@ -61,31 +55,18 @@ public class ConfigWindow() : Window("设置###HousingChecker",
 
         ImGui.TextColored(ImGuiColors.DalamudOrange, "快捷上传:");
 
-        var addon = Service.Gui.GetAddonByName("HousingSelectBlock");
-        ImGui.BeginDisabled(addon == nint.Zero);
-        if (ImGui.Button("一键上传当前房区数据"))
-        {
-            Task.Run(async () =>
-            {
-                for (var i = 0; i < 30; i++)
-                {
-                    unsafe
-                    {
-                        AgentHelper.SendEvent(AgentId.HousingPortal, 1, 1, i);
-                    }
+        ImGui.AlignTextToFramePadding();
+        ImGui.Text("房区信息:");
 
-                    await Task.Delay(100);
-                }
-            });
-        }
-        ImGui.EndDisabled();
-
-        if (addon == nint.Zero)
+        foreach (var area in Enum.GetValues<HouseArea>())
         {
-            ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
-            ImGui.PushStyleColor(ImGuiCol.TextDisabled, ImGuiColors.DalamudYellow);
-            ImGuiComponents.HelpMarker("未找到房区传送列表, 请先打开你想要上传数据的房区的传送列表");
-            ImGui.PopStyleColor(2);
+            if (area is HouseArea.未知) continue;
+
+            ImGui.PushID($"{area}-AreaInfo");
+            ImGui.SameLine();
+            if (ImGui.Button($"{area}###AreaInfo"))
+                Service.HousingStats.ObtainResidentAreaInfo(area);
+            ImGui.PopID();
         }
     }
 

@@ -19,11 +19,11 @@ public class Utils
     {
         return area switch
         {
-            HouseArea.Mist => "海雾村",
-            HouseArea.LavenderBeds => "薰衣草苗圃",
-            HouseArea.Goblet => "高脚孤丘",
-            HouseArea.Shirogane => "白银乡",
-            HouseArea.Empyreum => "穹顶皓天",
+            HouseArea.海雾村 => "海雾村",
+            HouseArea.薰衣草苗圃 => "薰衣草苗圃",
+            HouseArea.高脚孤丘 => "高脚孤丘",
+            HouseArea.白银乡 => "白银乡",
+            HouseArea.穹顶皓天 => "穹顶皓天",
             _ => "未知"
         };
     }
@@ -42,12 +42,12 @@ public class Utils
     {
         return area switch
         {
-            HouseArea.Unknown => -1,
-            HouseArea.Mist => 0,
-            HouseArea.LavenderBeds => 1,
-            HouseArea.Goblet => 2,
-            HouseArea.Shirogane => 3,
-            HouseArea.Empyreum => 4,
+            HouseArea.未知 => -1,
+            HouseArea.海雾村 => 0,
+            HouseArea.薰衣草苗圃 => 1,
+            HouseArea.高脚孤丘 => 2,
+            HouseArea.白银乡 => 3,
+            HouseArea.穹顶皓天 => 4,
             _ => -1
         };
     }

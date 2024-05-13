@@ -11,17 +11,12 @@ public class Configuration : IPluginConfiguration
     public string Token { get; set; } = string.Empty;
 
 
-    public void Init()
-    {
-    }
+    public void Init() { }
 
     public void Save()
     {
         Service.PluginInterface.SavePluginConfig(this);
     }
 
-    public void Uninit()
-    {
-
-    }
+    public void Uninit() { }
 }

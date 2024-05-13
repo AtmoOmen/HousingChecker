@@ -7,7 +7,7 @@ using HousingChecker.Info;
 using System.Threading.Tasks;
 using Dalamud.Interface.Internal.Notifications;
 using HousingChecker.Helpers;
-using Lumina.Excel.GeneratedSheets2;
+using Lumina.Excel.GeneratedSheets;
 
 namespace HousingChecker.Managers;
 
@@ -15,7 +15,8 @@ public class OnlineStatsManager
 {
     private static readonly HttpClient Client = new();
 
-    private const string BaseUrl = "https://house.ffxiv.cyou/api/";
+    private const string BaseUrl0 = "https://house.ffxiv.cyou/api/";
+    private const string BaseUrl1 = "https://househelper.ffxiv.cyou/api/";
 
     internal void Init()
     {
@@ -34,7 +35,7 @@ public class OnlineStatsManager
             Service.DalamudNotice.AddNotification(new()
             {
                 Title = "HousingChecker",
-                Content = $"房区信息: {entry.area} {entry.slot + 1}区 ({serverName}) 上传成功!",
+                Content = $"{entry.area} {entry.slot + 1}区 ({serverName}) 上传成功!",
                 InitialDuration = TimeSpan.FromSeconds(3),
                 ExtensionDurationSinceLastInterest = TimeSpan.FromSeconds(1),
                 Type = NotificationType.Success
@@ -51,7 +52,8 @@ public class OnlineStatsManager
             Service.DalamudNotice.AddNotification(new()
             {
                 Title = "HousingChecker",
-                Content = $"抽选信息: {Utils.HouseAreaNumberToString(entry.Area)} {entry.Slot + 1}区{entry.LandID}号 ({serverName}) 上传成功!",
+                Content =
+                    $"{Utils.HouseAreaNumberToString(entry.Area)} {entry.Slot + 1}区{entry.LandID}号 ({serverName}) 上传成功!",
                 InitialDuration = TimeSpan.FromSeconds(3),
                 ExtensionDurationSinceLastInterest = TimeSpan.FromSeconds(1),
                 Type = NotificationType.Success
@@ -59,12 +61,13 @@ public class OnlineStatsManager
         }
     }
 
-    private static async Task<HttpResponseMessage?> UploadDataAsync<T>(IEnumerable<T> data, string endpoint, string contentCategory)
+    private static async Task<HttpResponseMessage?> UploadDataAsync<T>(
+        IEnumerable<T> data, string endpoint, string contentCategory)
     {
         try
         {
             var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-            var response = await Client.PostAsync($"{BaseUrl}{endpoint}", content);
+            var response = await Client.PostAsync($"{BaseUrl0}{endpoint}", content);
 
             Service.Log.Debug($"{contentCategory}状态:\n" +
                               $"状态码: {response.StatusCode} 返回内容: {response.Content.ReadAsStringAsync().Result}");
@@ -111,8 +114,5 @@ public class OnlineStatsManager
     }
 
 
-    internal void Uninit()
-    {
-
-    }
+    internal void Uninit() { }
 }

@@ -12,30 +12,37 @@ public class WardSnapshot : IEquatable<WardSnapshot>
     /// 服务器 Unix 时间
     /// </summary>
     public long time;
+
     /// <summary>
     /// 服务器 ID
     /// </summary>
     public int server;
+
     /// <summary>
     /// 房区中文名称
     /// </summary>
     public string area = string.Empty;
+
     /// <summary>
     /// 房区 ID
     /// </summary>
     public int slot;
+
     /// <summary>
     /// 主要购买方式
     /// </summary>
     public int purchase_main;
+
     /// <summary>
     /// 次要购买方式
     /// </summary>
     public int purchase_sub;
+
     /// <summary>
     /// 主要区域类型
     /// </summary>
     public int region_main;
+
     /// <summary>
     /// 次要区域类型
     /// </summary>
@@ -70,7 +77,8 @@ public class WardSnapshot : IEquatable<WardSnapshot>
                 price = (int)houseInfo.HousePrice,
                 size = Utils.ToHouseSizeString((HouseSize)landSet?.PlotSize[i]!),
                 tags = houseInfo.HouseAppeals.Select(x => (int)x).Take(3).ToArray(),
-                isPersonal = houseInfo.InfoFlags.HasFlag(HousingFlags.PlotOwned) && !houseInfo.InfoFlags.HasFlag(HousingFlags.OwnedByFC),
+                isPersonal = houseInfo.InfoFlags.HasFlag(HousingFlags.PlotOwned) &&
+                             !houseInfo.InfoFlags.HasFlag(HousingFlags.OwnedByFC),
                 isEmpty = !houseInfo.InfoFlags.HasFlag(HousingFlags.PlotOwned),
                 isPublic = houseInfo.InfoFlags.HasFlag(HousingFlags.VisitorsAllowed),
                 hasGreeting = houseInfo.InfoFlags.HasFlag(HousingFlags.HasSearchComment)
@@ -117,34 +125,42 @@ public class HousingItem : IEquatable<HousingItem>
     /// 房屋 ID, 从 1 开始, 60 结束
     /// </summary>
     public int id;
+
     /// <summary>
     /// 所有人 ID
     /// </summary>
     public string owner = string.Empty;
+
     /// <summary>
     /// 价格
     /// </summary>
     public int price;
+
     /// <summary>
     /// 土地尺寸中文名称
     /// </summary>
     public string size = string.Empty;
+
     /// <summary>
     /// 房屋标签
     /// </summary>
     public int[] tags = null!;
+
     /// <summary>
     /// 是否为个人房屋
     /// </summary>
     public bool isPersonal;
+
     /// <summary>
     /// 是否为空地
     /// </summary>
     public bool isEmpty;
+
     /// <summary>
     /// 是否开放
     /// </summary>
     public bool isPublic;
+
     /// <summary>
     /// 是否有问候语
     /// </summary>
@@ -191,34 +207,42 @@ public class LotterySnapshot : IEquatable<LotterySnapshot>
     /// 服务器 ID
     /// </summary>
     public int ServerId { get; }
+
     /// <summary>
     /// 房区序号
     /// </summary>
     public int Area { get; }
+
     /// <summary>
     /// 房区ID, 从0开始, 29 结束
     /// </summary>
     public int Slot { get; }
+
     /// <summary>
     /// 房屋ID, 从1开始, 60 结束
     /// </summary>
     public int LandID { get; }
+
     /// <summary>
     /// 服务器 Unix 时间
     /// </summary>
     public long Time { get; }
+
     /// <summary>
     /// 结束时间, Unix 时间
     /// </summary>
     public uint EndTime { get; }
+
     /// <summary>
     /// 抽选阶段状态
     /// </summary>
     public int State { get; }
+
     /// <summary>
     /// 参与人数
     /// </summary>
     public uint Participate { get; }
+
     /// <summary>
     /// 胜选编号
     /// </summary>
@@ -276,58 +300,72 @@ public class HousingSellInfo : IEquatable<HousingSellInfo>
     /// 服务器 ID
     /// </summary>
     public int Server { get; set; }
+
     /// <summary>
     /// 区域 ID
     /// </summary>
     public int Area { get; set; }
+
     /// <summary>
     /// 房区 ID, 由 0 开始
     /// </summary>
     public int Slot { get; set; }
+
     /// <summary>
     /// 房屋 ID, 由 1 开始
     /// </summary>
     public int ID { get; set; }
+
     /// <summary>
     /// 价格
     /// </summary>
     public int Pirce { get; set; }
+
     /// <summary>
     /// 房屋尺寸
     /// </summary>
     public int Size { get; set; }
+
     /// <summary>
     /// 首次发现时间, Unix 时间戳
     /// </summary>
     public int FirstSeen { get; set; }
+
     /// <summary>
     /// 上次发现时间, Unix 时间戳
     /// </summary>
     public int LastSeen { get; set; }
+
     /// <summary>
     /// 抽签状态
     /// </summary>
     public int State { get; set; }
+
     /// <summary>
     /// 参与人数
     /// </summary>
     public int Participate { get; set; }
+
     /// <summary>
     /// 胜选编号
     /// </summary>
     public int Winner { get; set; }
+
     /// <summary>
     /// 当前阶段结束时间, Unix 时间戳
     /// </summary>
     public int EndTime { get; set; }
+
     /// <summary>
     /// 上次抽签信息更新时间
     /// </summary>
     public int UpdateTime { get; set; }
+
     /// <summary>
     /// 购买方式
     /// </summary>
     public int PurchaseType { get; set; }
+
     /// <summary>
     /// 房屋用途限制
     /// </summary>
