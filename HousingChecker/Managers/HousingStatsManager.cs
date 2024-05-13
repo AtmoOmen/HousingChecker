@@ -27,11 +27,15 @@ public class HousingStatsManager
         DetourName = nameof(ExecuteCommandDetour))]
     private Hook<ExecuteCommandDelegate>? ExecuteCommandHook;
 
-    private static readonly Dictionary<WardSnapshot, long> WardSnapshots = [];
-    private static readonly Dictionary<LotterySnapshot, long> LotterySnapshots = [];
+    private static readonly Dictionary<WardSnapshot, DateTime> WardSnapshots = [];
+    private static readonly Dictionary<LotterySnapshot, DateTime> LotterySnapshots = [];
+
+    private static TimeSpan FiveMinutesSpan;
 
     internal void Init()
     {
+        FiveMinutesSpan = TimeSpan.FromMinutes(5);
+
         Service.Hook.InitializeFromAttributes(this);
 
         PlacardSaleInfoHook?.Enable();
@@ -50,10 +54,10 @@ public class HousingStatsManager
         if (WardSnapshots.TryGetValue(uploadEntry, out var lastTime))
         {
             // 大于 5 分钟
-            if (Environment.TickCount64 - lastTime > 300_000)
+            if (DateTime.Now - lastTime > FiveMinutesSpan)
             {
                 Service.OnlineStats.UploadWard(uploadEntry);
-                WardSnapshots[uploadEntry] = Environment.TickCount64;
+                WardSnapshots[uploadEntry] = DateTime.Now;
             }
 
             Service.Log.Debug("正在处于上传冷却期, 禁止上传");
@@ -61,7 +65,7 @@ public class HousingStatsManager
         }
 
         Service.OnlineStats.UploadWard(uploadEntry);
-        WardSnapshots[uploadEntry] = Environment.TickCount64;
+        WardSnapshots[uploadEntry] = DateTime.Now;
     }
 
     // 门牌
@@ -83,10 +87,10 @@ public class HousingStatsManager
         if (LotterySnapshots.TryGetValue(uploadEntry, out var lastTime))
         {
             // 大于 5 分钟
-            if (Environment.TickCount64 - lastTime > 300_000)
+            if (DateTime.Now - lastTime > FiveMinutesSpan)
             {
                 Service.OnlineStats.UploadLottery(uploadEntry);
-                LotterySnapshots[uploadEntry] = Environment.TickCount64;
+                LotterySnapshots[uploadEntry] = DateTime.Now;
             }
 
             Service.Log.Debug("正在处于上传冷却期, 禁止上传");
@@ -94,7 +98,7 @@ public class HousingStatsManager
         }
 
         Service.OnlineStats.UploadLottery(uploadEntry);
-        LotterySnapshots[uploadEntry] = Environment.TickCount64;
+        LotterySnapshots[uploadEntry] = DateTime.Now;
 
         Service.OnlineStats.UploadLottery(uploadEntry);
     }
