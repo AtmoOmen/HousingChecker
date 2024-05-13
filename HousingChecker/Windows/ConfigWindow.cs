@@ -1,8 +1,10 @@
 using System;
+using System.Runtime.InteropServices;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using HousingChecker.Info;
 using ImGuiNET;
 
@@ -60,15 +62,25 @@ public class ConfigWindow() : Window("设置###HousingChecker",
         ImGui.AlignTextToFramePadding();
         ImGui.Text("房区信息:");
 
-        foreach (var area in Enum.GetValues<HouseArea>())
+        unsafe
         {
-            if (area is HouseArea.未知) continue;
+            var blockAddon = (AtkUnitBase*)Service.Gui.GetAddonByName("HousingSelectBlock");
+            ImGui.BeginDisabled(blockAddon == null);
+            foreach (var area in Enum.GetValues<HouseArea>())
+            {
+                if (area is HouseArea.未知) continue;
+                var title = string.Empty;
+                if (blockAddon != null) title = Marshal.PtrToStringUTF8((nint)blockAddon->AtkValues[2].String);
 
-            ImGui.PushID($"{area}-AreaInfo");
-            ImGui.SameLine();
-            if (ImGui.Button($"{area}###AreaInfo"))
-                Service.HousingStats.ObtainResidentAreaInfo(area);
-            ImGui.PopID();
+                ImGui.PushID($"{area}-AreaInfo");
+                ImGui.SameLine();
+                ImGui.BeginDisabled(!title.Contains(area.ToString()));
+                if (ImGui.Button($"{area}###AreaInfo"))
+                    Service.HousingStats.ObtainResidentAreaInfo(area);
+                ImGui.EndDisabled();
+                ImGui.PopID();
+            }
+            ImGui.EndDisabled();
         }
     }
 

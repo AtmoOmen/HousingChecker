@@ -50,6 +50,7 @@ public class Service
     [PluginService] public static ICommandManager Command { get; set; } = null!;
     [PluginService] public static IDataManager Data { get; private set; } = null!;
     [PluginService] public static IGameInteropProvider Hook { get; private set; } = null!;
+    [PluginService] public static IGameGui Gui { get; private set; } = null!;
     [PluginService] public static INotificationManager DalamudNotice { get; private set; } = null!;
     [PluginService] public static IPluginLog Log { get; private set; } = null!;
 
