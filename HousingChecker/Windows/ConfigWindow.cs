@@ -19,6 +19,8 @@ public class ConfigWindow() : Window("设置###HousingChecker",
         ImGui.Text("Housing Checker");
         ImGui.SetWindowFontScale(1f);
 
+        ImGui.Spacing();
+
         if (ImGui.Button("艾欧泽亚售楼中心"))
             Util.OpenLink("https://house.ffxiv.cyou/");
 
