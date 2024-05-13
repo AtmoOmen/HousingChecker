@@ -1,7 +1,6 @@
 using System;
 using System.Reflection;
 using Dalamud.Plugin;
-using HousingChecker;
 
 namespace HousingChecker;
 
