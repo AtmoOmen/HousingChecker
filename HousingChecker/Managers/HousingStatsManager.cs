@@ -1,7 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
+using Dalamud.Game.Addon.Lifecycle;
 using Dalamud.Hooking;
+using Dalamud.Interface.Internal.Notifications;
 using Dalamud.Utility.Signatures;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 using HousingChecker.Info;
 
 namespace HousingChecker.Managers;
@@ -41,6 +48,30 @@ public class HousingStatsManager
         PlacardSaleInfoHook?.Enable();
         HousingWardInfoHook?.Enable();
         ExecuteCommandHook?.Enable();
+
+        Service.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "HousingSelectBlock", OnAddonSelectBlock);
+    }
+
+    private void OnAddonSelectBlock(AddonEvent type, AddonArgs args)
+    {
+        string? title;
+        unsafe
+        {
+            var addon = (AtkUnitBase*)args.Addon;
+            if (addon == null) return;
+
+            title = Marshal.PtrToStringUTF8((nint)addon->AtkValues[2].String);
+        }
+        if (string.IsNullOrWhiteSpace(title)) return;
+
+        var finalEnum = Enum.GetValues<HouseArea>().FirstOrDefault(x => title.Contains(x.ToString()));
+        if (finalEnum is HouseArea.未知) return;
+
+        Task.Run(async () =>
+        {
+            await Task.Delay(1000);
+            await ObtainResidentAreaInfo(finalEnum);
+        });
     }
 
     // 房区
@@ -56,15 +87,14 @@ public class HousingStatsManager
             // 大于 5 分钟
             if (DateTime.Now - lastTime > FiveMinutesSpan)
             {
-                Service.OnlineStats.UploadWard(uploadEntry);
+                Service.OnlineStats.EnqueueWard(uploadEntry);
                 WardSnapshots[uploadEntry] = DateTime.Now;
             }
 
-            Service.Log.Debug("正在处于上传冷却期, 禁止上传");
             return;
         }
 
-        Service.OnlineStats.UploadWard(uploadEntry);
+        Service.OnlineStats.EnqueueWard(uploadEntry);
         WardSnapshots[uploadEntry] = DateTime.Now;
     }
 
@@ -89,27 +119,60 @@ public class HousingStatsManager
             // 大于 5 分钟
             if (DateTime.Now - lastTime > FiveMinutesSpan)
             {
-                Service.OnlineStats.UploadLottery(uploadEntry);
+                Service.OnlineStats.EnqueueLottery(uploadEntry);
                 LotterySnapshots[uploadEntry] = DateTime.Now;
             }
 
-            Service.Log.Debug("正在处于上传冷却期, 禁止上传");
             return;
         }
 
-        Service.OnlineStats.UploadLottery(uploadEntry);
+        Service.OnlineStats.EnqueueLottery(uploadEntry);
         LotterySnapshots[uploadEntry] = DateTime.Now;
 
-        Service.OnlineStats.UploadLottery(uploadEntry);
+        Service.OnlineStats.EnqueueLottery(uploadEntry);
     }
 
-    public void ObtainResidentAreaInfo(HouseArea area)
+    public async Task ObtainResidentAreaInfo(HouseArea area)
     {
         if (area == HouseArea.未知) return;
 
+        unsafe
+        {
+            var addon = (AtkUnitBase*)Service.Gui.GetAddonByName("HousingSelectBlock");
+            if (addon == null)
+            {
+                Service.DalamudNotice.AddNotification(new()
+                {
+                    Title = "HousingChecker",
+                    Content = "禁止上传: 未获取到可用的 选择住宅区 界面",
+                    InitialDuration = TimeSpan.FromSeconds(3),
+                    ExtensionDurationSinceLastInterest = TimeSpan.FromSeconds(1),
+                    Type = NotificationType.Error
+                });
+                return;
+            }
+
+            var title = Marshal.PtrToStringUTF8((nint)addon->AtkValues[2].String);
+            if (string.IsNullOrWhiteSpace(title) || !title.Contains(area.ToString()))
+            {
+                Service.DalamudNotice.AddNotification(new()
+                {
+                    Title = "HousingChecker",
+                    Content = "禁止上传: 界面错误或未选择对应房区",
+                    InitialDuration = TimeSpan.FromSeconds(3),
+                    ExtensionDurationSinceLastInterest = TimeSpan.FromSeconds(1),
+                    Type = NotificationType.Error
+                });
+                return;
+            }
+        }
+
         const int AreaCount = 30;
         for (var i = 0; i < AreaCount; i++)
+        {
             ExecuteCommandDetour(1107, (int)area, i, 0, 0);
+            await Task.Delay(100);
+        }
     }
 
     public void ObtainResidentAreaHousesInfo(HouseArea area, int wardID)
@@ -136,6 +199,8 @@ public class HousingStatsManager
 
     internal void Uninit()
     {
+        Service.AddonLifecycle.UnregisterListener(OnAddonSelectBlock);
+
         ExecuteCommandHook?.Dispose();
         ExecuteCommandHook = null;
 

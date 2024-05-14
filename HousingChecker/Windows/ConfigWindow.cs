@@ -1,5 +1,7 @@
 using System;
+using System.Threading.Tasks;
 using Dalamud.Interface.Colors;
+using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
 using Dalamud.Utility;
@@ -13,6 +15,8 @@ public class ConfigWindow() : Window("设置###HousingChecker",
                                      ImGuiWindowFlags.NoScrollbar |
                                      ImGuiWindowFlags.NoScrollWithMouse), IDisposable
 {
+    private static bool IsOnFetching;
+
     public override void Draw()
     {
         ImGui.SetWindowFontScale(2f);
@@ -57,9 +61,13 @@ public class ConfigWindow() : Window("设置###HousingChecker",
 
         ImGui.TextColored(ImGuiColors.DalamudOrange, "快捷上传:");
 
+        ImGui.SameLine();
+        ImGuiComponents.HelpMarker("仅允许在 选择住宅区 界面打开的情况下,\n快捷上传当前对应房区的数据信息");
+
         ImGui.AlignTextToFramePadding();
         ImGui.Text("房区信息:");
 
+        ImGui.BeginDisabled(IsOnFetching);
         foreach (var area in Enum.GetValues<HouseArea>())
         {
             if (area is HouseArea.未知) continue;
@@ -67,9 +75,14 @@ public class ConfigWindow() : Window("设置###HousingChecker",
             ImGui.PushID($"{area}-AreaInfo");
             ImGui.SameLine();
             if (ImGui.Button($"{area}###AreaInfo"))
-                Service.HousingStats.ObtainResidentAreaInfo(area);
+            {
+                IsOnFetching = true;
+                Task.Run(async () => await Service.HousingStats.ObtainResidentAreaInfo(area));
+                Service.Framework.RunOnTick(() => IsOnFetching = false, TimeSpan.FromSeconds(10));
+            }
             ImGui.PopID();
         }
+        ImGui.EndDisabled();
     }
 
     public void Dispose() { }
