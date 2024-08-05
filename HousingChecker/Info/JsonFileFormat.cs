@@ -257,7 +257,7 @@ public class LotterySnapshot : IEquatable<LotterySnapshot>
         LandID = plotID + 1;
         State = (int)info.LotteryState;
         Participate = info.EntryCount;
-        // Winner = info.Winner;
+        Winner = info.Winner;
         EndTime = info.PhaseEndsAt;
     }
 
@@ -277,10 +277,7 @@ public class LotterySnapshot : IEquatable<LotterySnapshot>
         return Equals((LotterySnapshot)obj);
     }
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(ServerId, Area, Slot, LandID);
-    }
+    public override int GetHashCode() => HashCode.Combine(ServerId, Area, Slot, LandID);
 
     public static bool operator ==(LotterySnapshot? lhs, LotterySnapshot? rhs)
     {
@@ -288,10 +285,7 @@ public class LotterySnapshot : IEquatable<LotterySnapshot>
         return lhs.Equals(rhs);
     }
 
-    public static bool operator !=(LotterySnapshot lhs, LotterySnapshot rhs)
-    {
-        return !(lhs == rhs);
-    }
+    public static bool operator !=(LotterySnapshot lhs, LotterySnapshot rhs) => !(lhs == rhs);
 }
 
 public class HousingSellInfo : IEquatable<HousingSellInfo>
@@ -389,10 +383,7 @@ public class HousingSellInfo : IEquatable<HousingSellInfo>
         return Equals((HousingSellInfo)obj);
     }
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Server, Area, Slot, ID);
-    }
+    public override int GetHashCode() => HashCode.Combine(Server, Area, Slot, ID);
 
     public static bool operator ==(HousingSellInfo? lhs, HousingSellInfo? rhs)
     {
@@ -400,8 +391,5 @@ public class HousingSellInfo : IEquatable<HousingSellInfo>
         return lhs.Equals(rhs);
     }
 
-    public static bool operator !=(HousingSellInfo lhs, HousingSellInfo rhs)
-    {
-        return !(lhs == rhs);
-    }
+    public static bool operator !=(HousingSellInfo lhs, HousingSellInfo rhs) => !(lhs == rhs);
 }

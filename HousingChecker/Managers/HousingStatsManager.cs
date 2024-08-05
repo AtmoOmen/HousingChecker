@@ -126,9 +126,7 @@ public class HousingStatsManager
             return;
         }
 
-        Service.OnlineStats.EnqueueLottery(uploadEntry);
         LotterySnapshots[uploadEntry] = DateTime.Now;
-
         Service.OnlineStats.EnqueueLottery(uploadEntry);
     }
 
@@ -136,6 +134,7 @@ public class HousingStatsManager
     {
         if (area == HouseArea.未知) return;
 
+        /*
         unsafe
         {
             var addon = (AtkUnitBase*)Service.Gui.GetAddonByName("HousingSelectBlock");
@@ -166,6 +165,7 @@ public class HousingStatsManager
                 return;
             }
         }
+        */
 
         const int AreaCount = 30;
         for (var i = 0; i < AreaCount; i++)

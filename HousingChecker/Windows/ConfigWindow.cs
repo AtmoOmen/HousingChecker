@@ -61,8 +61,8 @@ public class ConfigWindow() : Window("设置###HousingChecker",
 
         ImGui.TextColored(ImGuiColors.DalamudOrange, "快捷上传:");
 
-        ImGui.SameLine();
-        ImGuiComponents.HelpMarker("仅允许在 选择住宅区 界面打开的情况下,\n快捷上传当前对应房区的数据信息");
+        // ImGui.SameLine();
+        // ImGuiComponents.HelpMarker("仅允许在 选择住宅区 界面打开的情况下,\n快捷上传当前对应房区的数据信息");
 
         ImGui.AlignTextToFramePadding();
         ImGui.Text("房区信息:");

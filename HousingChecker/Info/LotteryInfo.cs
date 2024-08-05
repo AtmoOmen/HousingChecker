@@ -12,7 +12,7 @@ public class LotteryInfo
     public uint PhaseEndsAt;          // 0x28 - 0x2B
     public uint Unknown3;             // 0x2C - 0x2F
     public uint EntryCount;           // 0x30 - 0x33
-    public byte[] Unknown4 = null!;   // 0x34 - 0x4B
+    public uint Winner;               // 0x34 - 0x37
 
     public static unsafe LotteryInfo Read(nint dataPtr)
     {
@@ -29,8 +29,9 @@ public class LotteryInfo
             PhaseEndsAt = binaryReader.ReadUInt32(),
             Unknown3 = binaryReader.ReadUInt32(),
             EntryCount = binaryReader.ReadUInt32(),
-            Unknown4 = binaryReader.ReadBytes(16)
+            Winner = binaryReader.ReadUInt32(),
         };
+
         return saleInfo;
     }
 }
